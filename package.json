@@ -1,14 +1,14 @@
 {
-  "name": "vacq",
+  "name": "assignment4",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+     ,"dev":"nodemon server.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "beam",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2"
