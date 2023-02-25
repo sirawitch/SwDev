@@ -7,7 +7,7 @@ exports.getHospitals=async(req,res,next)=>{
         console.log(reqQuery);
         let queryStr=JSON.stringify(req.query);
         queryStr=queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,match=>`$${match}`);
-        query=Hospital.find(JSON.parse(queryStr));
+        query=Hospital.find(JSON.parse(queryStr)).populate('appointments');
         if(req.query.select){
             const fields=req.query.select.split(',').join(' ');
             query=query.select(fields);
@@ -75,10 +75,11 @@ exports.updateHospital=async(req,res,next)=>{
 }
 exports.deleteHospital=async(req,res,next)=>{
     try{
-        const hospital = await Hospital.findByIdAndDelete(req.params.id);
+        const hospital = await Hospital.findById(req.params.id);
         if(!hospital){
-            return res.status(400).json({success:false})
+            return res.status(404).json({success:false,message:`Bootcamp not found with id of ${req.params.id}`})
         }
+        hospital.remove();
         res.status(200).json({success:true,data:{}});
     }catch(err){
         res.status(400).json({success:false})
