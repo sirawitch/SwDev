@@ -90,8 +90,8 @@ exports.getVacCenters=(req,res,next)=>{
     vacCenter.getAll((err,data)=>{
         if(err) res.status(500).send({
             message:
-                err.message || "Some errro occurred while retrieving Vaccine Centers."
+                err.message || "Some error occurred while retrieving Vaccine Centers."
         })
         else res.send(data);
-    })
-}
+    });
+};

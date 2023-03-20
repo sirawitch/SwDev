@@ -4,5 +4,5 @@ var connection = mysql.createPool({
     user:'root',
     password:'12345678',
     database:'vacCenter'
-})
+});
 module.exports = connection;
