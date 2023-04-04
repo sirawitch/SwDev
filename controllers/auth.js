@@ -8,7 +8,7 @@ const sendTokenResponse=(user,statusCode,res)=>{
     if(process.env.NODE_ENV==='production'){
         options.secure=true
     }
-    res.status(statusCode).json({
+    res.status(statusCode).cookie('token',token,options).json({
         success:true,
         _id:user._id, 
         name: user.name, 
@@ -33,6 +33,7 @@ exports.register =async (req,res,next)=>{
     }
 }
 exports.login=async (req,res,next)=>{
+    try{
     const {email,password}=req.body;
     if(!email||!password){
         return res.status(400).json({success:false,msg:"Please provide an email and password"})
@@ -48,6 +49,10 @@ exports.login=async (req,res,next)=>{
     //const token=user.getSignedJwtToken();
     //return res.status(200).json({success:true,token});
     sendTokenResponse(user,200,res);
+    }
+    catch(err){
+         return res.status(401).json({success:false, msg:'Cannot convert email or password to string'});
+    }
 }
 exports.getMe=async(req,res,next)=>{
     const user=await User.findById(req.user.id);
@@ -55,3 +60,13 @@ exports.getMe=async(req,res,next)=>{
         success:true,data:user
     })
 }
+exports.logout =async(req,res,next)=>{
+    res.cookie('token','none',{
+        expires: new Date(Date.now()+ 10*1000),
+        httpOnly:true
+    });
+    res.status(200).cookie('token',token,options).json({
+        success:true,
+        data:{} 
+    });
+};
